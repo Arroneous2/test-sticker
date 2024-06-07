@@ -3,6 +3,7 @@ import { StatusBar } from "expo-status-bar";
 import { StyleSheet, View } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import * as MediaLibrary from "expo-media-library";
 
 import Button from "./components/Button";
 import ImageViewer from "./components/ImageViewer";
@@ -19,6 +20,7 @@ export default function App() {
   const [showAppOptions, setShowAppOptions] = useState(false);
   const [pickedEmoji, setPickedEmoji] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
+  const [status, requestPermission] = MediaLibrary.usePermissions();
 
   const pickImageAsync = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -45,6 +47,10 @@ export default function App() {
   const onModalClose = () => {
     setIsModalVisible(false);
   };
+
+  if (status === null) {
+    requestPermission();
+  }
 
   const onSaveImageAsync = async () => {
     // we will implement this later
